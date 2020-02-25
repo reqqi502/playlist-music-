@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title> gallery</title>
+  <link href="style2.css" rel="stylesheet" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+</head>
+<body style="background-color: black">
+
+
+<div class="menu-bare">
+	<video class="videoplay"controls muted controls autoplay >
+		<source src="video.mp4" type="video/mp4">
+	</video> 
+</div>
+	
+	
+
+
+
+	<div class="menu-gen">
+	 <img class="img" src="imgspot.png"alt="spotify"><br>
+	 <p style="font-family:Comic Sans MS, serif;color:blue;margin:97px 0px 0px 15px;position: absolute; "> Remix Playlist 🎧
+</p>
+	</div>
+	<div class="menu">
+	<ul>
+   	    
+		<li ><a href="playList.html" style="text-decoration: none;">Playlist</a></li>
+		<li><a href="gallery.html" style="text-decoration: none;">Gallery</a></li>
+	  </ul>
+	 
+   </div>
+
+    <header>
+           
+            </header>
+            <section class="section"> 
+                <h1 class="pserax">Gallery</h1>
+                <div class="formulaire">
+                <table>
+                    <tr>
+                        <td style="font-size: 20px;">image</td><td><input type="text" id="image" placeholder="ex:1.jfif"></td></tr>
+                        <td style="font-size: 20px;">nom image</td><td><input type="text" id="text"placeholder="nom image"></td></tr>
+                        <tr><td style="font-size: 20px;">tags</td><td><input type="text" id="text2"placeholder="tags"></td></tr>
+                        <tr><td style="font-size: 20px;">lien</td><td><input type="text" id="text3" placeholder="lien"></td></tr>
+               </table>
+                 <button type="button" id="push"> add </button>
+                 <button type="button" id="pop"> removeLast </button>
+                 <button type="button" id="popL"> removeFirst  </button><br><br>
+            </div>
+                <br>
+               
+                <div class="audio" id="aud" style="display: none;">
+                    
+                <div id="cont" >
+                   
+                </div><br>
+
+               <td><button type="button" id="btnP"  > prev </button></td>
+               <td><button type="button" id="btnS" >next</button></td>
+                </div>
+               
+            </section>
+            <script>
+            
+                class Node{
+                constructor(data){
+                    this.data=data;
+                    this.prev=null;
+                    this.next=null;
+                }
+                }
+                class linkedlist{
+                    constructor(){
+                        this.head=null;
+                        this.tail=null;
+                        this.length=0;
+                
+                    }
+                    push(data)
+                    { 
+                        let node=new Node(data);
+                        if(!this.head)
+                        {
+                            this.head=node;
+                            this.tail=node;
+                        }
+                        else{
+                            let temp=this.tail;
+                            this.tail=node;
+                            node.prev=temp;
+                            temp.next=node;
+                        }
+                        this.length++;
+                        return this;
+                    }
+                    pop(){
+        if(!this.head)return null
+        let temp =this.tail;
+        if(this.length===1){
+            this.head=null;
+            this.tail=null;
+        }
+        else{
+            this.tail=temp.prev;
+            this.tail.next=null;
+            temp.prev=null;
+        }
+        this.length--;
+        return this;
+    }
+    popL(){
+        if(!this.head)return null
+        let temp =this.head;
+        if(this.length===1){
+            this.head=null;
+            this.tail=null;
+        }
+        else{
+            this.head=temp.next;
+            this.head.prev=null;
+            temp.next=null;
+        }
+        this.length--;
+        return this;
+    }
+
+                    next(){
+                        if(this.tail && this.tail.next)
+                        this.tail=this.tail.next;
+                    }
+                    prev(){
+                        if(this.tail && this.tail.prev)
+                        this.tail=this.tail.prev;
+                    }
+                    showList(){ 
+                         if(this.tail)
+                         {
+                             document.getElementById('cont').innerHTML=this.tail.data;
+                
+                         }
+                     }
+                     showList2(){
+        
+        let current = this.head;
+		let list = "";
+		while(current)
+		{
+ 			list = current.data;
+	 		current = current.next;
+		}
+        document.getElementById('cont').innerHTML=list;
+ 		return list;
+        
+    }
+                }
+                let ld=new linkedlist();
+                var push=document.getElementById('push');
+                var pop=document.getElementById('pop');
+                var popL=document.getElementById('popL');
+                var next=document.getElementById('btnS');
+                var prev=document.getElementById('btnP');
+                push.onclick=function(){
+                    var image=document.getElementById('image').value;
+                    var nom=document.getElementById('text').value;
+                    var txt=document.getElementById('text2').value;
+                    var txt2=document.getElementById('text3').value;
+                    if(image=="" || nom=="" || txt=="" || txt2==""){
+                    alert("erreur de saisie");
+                }
+                if(image=="1.jfif" || image=="2.jfif" || image=="3.jfif")
+                {
+                    ld.push("<div><p style='position: relative;bottom: 9px;left: 61px;'>"+nom+"</p ><img src='"+image+"'><div><p style='position: relative;top: 198px;left: 48px;'><span style='color:white;font-weight:bold;text-decoration:underline;font-size:20px'>Tags:</span>&nbsp;"+txt+"</p><p style='position: relative;top: 198px;left: 48px;'><span style='color:white;font-weight:bold;text-decoration:underline;font-size:20px'>Lien:</span>&nbsp; <a href="+txt2+" target='_BLANK' style='text-decoration:none;color:gray ;border:1px solid black'>lien</a></p>");
+                    document.getElementById('aud').style.display="block";
+            
+                    ld.showList();
+                }
+                else
+                {
+                   alert("image not exist")
+                }
+                }
+                
+                pop.onclick=function(){
+                    ld.pop();
+                   ld.showList2();
+                     }
+                     popL.onclick=function(){
+                    ld.popL();
+                   ld.showList2();
+
+                     }
+                next.onclick=function(){
+                    ld.next();
+                    ld.showList();
+                }
+                prev.onclick=function(){
+                    ld.prev();
+                    ld.showList();
+                }
+            
+                </script>
+
+
+</body>
+</html>

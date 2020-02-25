@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title> playlist</title>
+  <link href="style.css" rel="stylesheet" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+</head>
+<body style="background-color: black">
+
+
+<div class="menu-bare">
+	<video class="videoplay"controls muted controls autoplay >
+		<source src="video.mp4" type="video/mp4">
+	</video> 
+</div>
+	
+	
+
+
+
+	<div class="menu-gen">
+	 <img class="img" src="imgspot.png"alt="spotify"><br>
+	 <p style="font-family:Comic Sans MS, serif;color:blue;margin:97px 0px 0px 15px;position: absolute; "> Remix Playlist 🎧
+</p>
+	</div>
+	<div class="menu">
+	<ul>
+   	    
+		<li ><a href="playList.html" style="text-decoration: none;">Playlist</a></li>
+		<li><a href="gallery.html" style="text-decoration: none;">Gallery</a></li>
+	  </ul>
+	 
+   </div>
+
+    <header>
+           
+            </header>
+            <section class="section"> 
+                <h1 class="pserax"> Play List</h1>
+                <div class="formulaire">
+                <table>
+                    <tr>
+                        <td style="font-size: 20px;">audio</td><td><input type="text" id="audio" placeholder="ex:A.mp3"></td></tr>
+                        <td style="font-size: 20px;">nom artist</td><td><input type="text" id="text" placeholder="nom artist"></td></tr>
+                        <tr><td style="font-size: 20px;">album</td><td><input type="text" id="text2" placeholder="album"></td></tr>
+                        <tr><td style="font-size: 20px;">genre</td><td><input type="text" id="text3" placeholder="genre"></td></tr>
+                      <tr>  <td style="font-size: 20px;">lien</td><td><input type="text" id="text4" placeholder="lien"></td></tr>
+               </table>
+                 <button type="button" id="push"> add </button>
+                 <button type="button" id="pop"> removeLast  </button>
+                 <button type="button" id="popL"> removeFirst </button><br><br>
+            </div>
+                <br>
+                <div class="audio" style="display: none;" id="aud">
+                    <img src='music2.png' class="logo">
+                <div id="cont" >
+                   
+                </div><br>
+               <td><button type="button" id="btnP"  > prev </button></td>
+               <td><button type="button" id="btnS" >next</button></td>
+                </div>
+               
+            </section>
+            <script>
+            
+                class Node{
+                constructor(data){
+                    this.data=data;
+                    this.prev=null;
+                    this.next=null;
+                }
+                }
+                class linkedlist{
+                    constructor(){
+                        this.head=null;
+                        this.tail=null;
+                        this.length=0;
+                
+                    }
+                    push(data)
+                    { 
+                        let node=new Node(data);
+                        if(!this.head)
+                        {
+                            this.head=node;
+                            this.tail=node;
+                        }
+                        else{
+                            let temp=this.tail;
+                            this.tail=node;
+                            node.prev=temp;
+                            temp.next=node;
+                        }
+                        this.length++;
+                        return this;
+                    }
+                    pop(){
+        if(!this.head)return null
+        let temp =this.tail;
+        if(this.length===1){
+            this.head=null;
+            this.tail=null;
+        }
+        else{
+            this.tail=temp.prev;
+            this.tail.next=null;
+            temp.prev=null;
+        }
+        this.length--;
+        return this;
+    }
+    popL(){
+        if(!this.head)return null
+        let temp =this.head;
+        if(this.length===1){
+            this.head=null;
+            this.tail=null;
+        }
+        else{
+            this.head=temp.next;
+            this.head.prev=null;
+            temp.next=null;
+        }
+        this.length--;
+        return this;
+    }
+                    next(){
+                        if(this.tail && this.tail.next)
+                        this.tail=this.tail.next;
+                    }
+                    prev(){
+                        if(this.tail && this.tail.prev)
+                        this.tail=this.tail.prev;
+                    }
+                    showList(){ 
+                         if(this.tail)
+                         {
+                             document.getElementById('cont').innerHTML=this.tail.data;
+                
+                         }
+                     }
+                     showList2(){
+        let current = this.head;
+		let list = "";
+		while(current)
+		{
+ 			list = current.data;
+	 		current = current.next;
+		}
+        document.getElementById('cont').innerHTML=list;
+ 		return list;
+    }
+                }
+
+                let ld=new linkedlist();
+                var push=document.getElementById('push');
+                var pop=document.getElementById('pop');
+                var popL=document.getElementById('popL');
+                var next=document.getElementById('btnS');
+                var prev=document.getElementById('btnP');
+             
+              ld.showList();
+              push.onclick=function(){
+                    var txt=document.getElementById('audio').value;
+                    var txtD=document.getElementById('text').value;
+                    var txtA=document.getElementById('text2').value;
+                    var txtG=document.getElementById('text3').value;
+                    var txtL=document.getElementById('text4').value;
+              
+                    if(txt=="" || txtD=="" || txtA=="" || txtG=="" || txtL=="" ){
+                    alert("erreur de saisie");
+                }
+                else
+                {
+                    document.getElementById('aud').style.display="block";
+                    ld.push("<img src='music3.png'style='width:130px;margin-top:-6px;margin-left:2px'><div><div style='position:relative;left:150px'><span style='color:black;font-weight:bold;text-decoration:underline'>name artist:</span>&nbsp; <span style='color:DimGray'>"+txtD+"</span></div>"+"<p style='position:relative;left:150px'><span style='color:black;font-weight:bold;text-decoration:underline'>album:</span>&nbsp;<span style='color:DimGray'> "+txtA+"</span></p>"+"<p style='position:relative;left:150px'><span style='color:black;font-weight:bold;text-decoration:underline'>genre:</span>&nbsp;<span style='color:DimGray'>"+txtG+"</span></p>"+"<p style='position:relative;left:150px'><span style='color:black;font-weight:bold;text-decoration:underline'>lien:</span>&nbsp; <span style='color:DimGray'><a href="+txtL+" target='_BLANK'style='text-decoration:none;color:DimGray;border:1px solid black;'>lien</a></span></p><audio src='"+txt+"' controls style='position: relative;right: 4px;TOP: 14px;width:350px'></audio></div>");
+                }
+                
+                    ld.showList();
+                }
+                pop.onclick=function(){
+                    ld.pop();
+                   ld.showList2();
+                     }
+                     popL.onclick=function(){
+                    ld.popL();
+                   ld.showList2();
+
+                     }
+                next.onclick=function(){
+                    ld.next();
+                    ld.showList();
+                }
+                prev.onclick=function(){
+                    ld.prev();
+                    ld.showList();
+                }
+            
+                </script>
+
+
+</body>
+</html>
